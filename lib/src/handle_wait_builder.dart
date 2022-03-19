@@ -1,23 +1,27 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 
-typedef WaitChildBuilder = Widget Function(
+typedef WaitHandler = FutureOr Function();
+
+typedef WaitBuilder = Widget Function(
     BuildContext context, VoidCallback? onTap);
 
-class WaitBuilder extends StatefulWidget {
-  final VoidCallback onTap;
-  final WaitChildBuilder builder;
+class HandleWaitBuilder extends StatefulWidget {
+  final WaitHandler handler;
+  final WaitBuilder builder;
 
-  const WaitBuilder({
-    required this.onTap,
+  const HandleWaitBuilder({
+    required this.handler,
     required this.builder,
     Key? key,
   }) : super(key: key);
 
   @override
-  _WaitBuilderState createState() => _WaitBuilderState();
+  _HandleWaitBuilderState createState() => _HandleWaitBuilderState();
 }
 
-class _WaitBuilderState extends State<WaitBuilder> {
+class _HandleWaitBuilderState extends State<HandleWaitBuilder> {
   late ValueNotifier<bool> _blocked;
 
   @override
@@ -42,9 +46,14 @@ class _WaitBuilderState extends State<WaitBuilder> {
     }
 
     return () async {
-      _blocked.value = true;
-      await Future.delayed(Duration.zero, widget.onTap);
-      _blocked.value = false;
+      try {
+        _blocked.value = true;
+        await widget.handler();
+        _blocked.value = false;
+      } catch (e) {
+        _blocked.value = false;
+        rethrow;
+      }
     };
   }
 }

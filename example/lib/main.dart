@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wait_builder/wait_builder.dart';
+import 'package:handle_wait_builder/handle_wait_builder.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,15 +23,15 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: WaitBuilder(
+        child: HandleWaitBuilder(
+          handler: () => Future.delayed(const Duration(milliseconds: 2000)),
+          // handler: () => Future.delayed(const Duration(milliseconds: 2000),
+          //     () => throw UnimplementedError()),
           builder: (context, onTap) {
             return ElevatedButton(
               onPressed: onTap,
-              child: onTap == null ? Text('...') : Text('123'),
+              child: onTap == null ? const Text('...') : const Text('CLICK'),
             );
-          },
-          onTap: () async {
-            await Future.delayed(Duration(milliseconds: 1000));
           },
         ),
       ),
