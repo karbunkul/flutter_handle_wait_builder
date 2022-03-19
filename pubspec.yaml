@@ -1,6 +1,7 @@
 name: handle_wait_builder
-description: A new Flutter package project.
-version: 0.9.1+16
+description: Handle wait bulder.
+version: 0.9.0
+repository: https://github.com/karbunkul/flutter_handle_wait_builder
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
